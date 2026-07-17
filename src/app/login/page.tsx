@@ -27,8 +27,12 @@ export default function LoginPage() {
       }
       router.push("/");
       router.refresh();
-    } catch {
-      setError("Network error — please try again.");
+    } catch (err) {
+      if (err instanceof TypeError) {
+        setError("Couldn't reach the server. Check your connection and try signing in again.");
+      } else {
+        setError("The server returned an unexpected response — it may be down or failing to build. Please try again shortly.");
+      }
     } finally {
       setLoading(false);
     }
