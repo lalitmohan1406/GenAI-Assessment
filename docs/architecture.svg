@@ -1,0 +1,235 @@
+<svg width="1560" height="1040" viewBox="0 0 1560 1040" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aDark" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#334155"/>
+    </marker>
+    <marker id="aBlue" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#2563EB"/>
+    </marker>
+    <marker id="aAmber" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 z" fill="#D97706"/>
+    </marker>
+  </defs>
+
+  <rect width="1560" height="1040" fill="#F8FAFC"/>
+
+  <!-- Title -->
+  <text x="48" y="58" font-size="26" font-weight="700" fill="#0F172A">FinanceOS — Invoice Exception Triage</text>
+  <text x="48" y="84" font-size="14" fill="#64748B">Data-flow (I/O) view · numbered arrows trace one invoice from submission to an audited decision</text>
+
+  <!-- Legend -->
+  <rect x="1120" y="26" width="392" height="70" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <line x1="1136" y1="46" x2="1176" y2="46" stroke="#334155" stroke-width="2"/>
+  <text x="1186" y="50" font-size="12" fill="#334155">application data flow</text>
+  <line x1="1136" y1="64" x2="1176" y2="64" stroke="#2563EB" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="1186" y="68" font-size="12" fill="#334155">LLM input / output</text>
+  <line x1="1136" y1="82" x2="1176" y2="82" stroke="#D97706" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="1186" y="86" font-size="12" fill="#334155">fallback when the LLM call fails (inside Stage 2)</text>
+
+  <!-- ================= LANES ================= -->
+  <rect x="48" y="108" width="1464" height="162" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="64" y="130" font-size="11.5" font-weight="700" fill="#475569" letter-spacing="1.2">FINANCE USER — BROWSER</text>
+
+  <rect x="48" y="280" width="1464" height="280" rx="10" fill="#FFFFFF" stroke="#CBD5E1"/>
+  <text x="64" y="302" font-size="11.5" font-weight="700" fill="#475569" letter-spacing="1.2">FINANCEOS SERVER — NEXT.JS API + DOMAIN LOGIC</text>
+
+  <rect x="48" y="572" width="1464" height="232" rx="10" fill="#ECFDF5" stroke="#CBD5E1"/>
+  <text x="64" y="594" font-size="11.5" font-weight="700" fill="#475569" letter-spacing="1.2">DATA — SQLITE VIA PRISMA (MIGRATIONS)</text>
+
+  <rect x="48" y="816" width="1464" height="150" rx="10" fill="#EFF6FF" stroke="#CBD5E1"/>
+  <text x="64" y="838" font-size="11.5" font-weight="700" fill="#475569" letter-spacing="1.2">EXTERNAL SERVICE — LLM</text>
+
+  <!-- ================= LANE A BOXES ================= -->
+  <g>
+    <rect x="70" y="170" width="180" height="76" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="86" y="196" font-size="13.5" font-weight="600" fill="#0F172A">Sign in</text>
+    <text x="86" y="216" font-size="12" fill="#64748B">email + password</text>
+
+    <rect x="300" y="170" width="200" height="76" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="316" y="196" font-size="13.5" font-weight="600" fill="#0F172A">Submit invoice</text>
+    <text x="316" y="216" font-size="12" fill="#64748B">manual form or JSON upload</text>
+
+    <rect x="1120" y="170" width="190" height="76" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="1136" y="196" font-size="13.5" font-weight="600" fill="#0F172A">Review + decide</text>
+    <text x="1136" y="216" font-size="12" fill="#64748B">approve · escalate · reject</text>
+    <text x="1136" y="232" font-size="12" fill="#64748B">(+ optional note)</text>
+
+    <rect x="1340" y="170" width="170" height="76" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="1356" y="196" font-size="13.5" font-weight="600" fill="#0F172A">Dashboard</text>
+    <text x="1356" y="216" font-size="12" fill="#64748B">volume · overrides · speed</text>
+  </g>
+
+  <!-- ================= LANE B BOXES ================= -->
+  <g>
+    <rect x="70" y="336" width="180" height="88" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="86" y="360" font-size="13.5" font-weight="600" fill="#0F172A">Middleware + auth</text>
+    <text x="86" y="380" font-size="12" fill="#64748B">verify JWT on every request</text>
+    <text x="86" y="398" font-size="11" fill="#94A3B8" font-family="Menlo, monospace">auth.ts · middleware.ts</text>
+
+    <rect x="300" y="336" width="200" height="88" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="316" y="360" font-size="13.5" font-weight="600" fill="#0F172A">POST /api/invoices</text>
+    <text x="316" y="380" font-size="12" fill="#64748B">zod-validate → save "pending"</text>
+    <text x="316" y="398" font-size="11" fill="#94A3B8" font-family="Menlo, monospace">invoices/route.ts</text>
+
+    <rect x="540" y="336" width="240" height="88" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="556" y="360" font-size="13.5" font-weight="600" fill="#0F172A">Stage 1 — rules engine</text>
+    <text x="556" y="380" font-size="12" fill="#64748B">deterministic checks → flags (no AI)</text>
+    <text x="556" y="398" font-size="11" fill="#94A3B8" font-family="Menlo, monospace">matching.ts</text>
+
+    <rect x="840" y="336" width="250" height="130" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+    <text x="856" y="360" font-size="13.5" font-weight="600" fill="#0F172A">Stage 2 — LLM call</text>
+    <text x="856" y="380" font-size="12" fill="#64748B">fill prompt → Claude → validate reply</text>
+    <text x="856" y="398" font-size="11" fill="#94A3B8" font-family="Menlo, monospace">prompt.ts · llm.ts</text>
+    <line x1="852" y1="408" x2="1078" y2="408" stroke="#FDE68A" stroke-width="1"/>
+    <text x="856" y="425" font-size="11" font-weight="600" fill="#B45309">fallback — key missing · timeout ·</text>
+    <text x="856" y="440" font-size="11" font-weight="600" fill="#B45309">429 · bad JSON → rules verdict</text>
+    <text x="856" y="455" font-size="11" fill="#B45309">from same flags, source="fallback"</text>
+
+    <rect x="1130" y="336" width="200" height="88" rx="8" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="1146" y="360" font-size="13.5" font-weight="600" fill="#0F172A">Decision + metrics APIs</text>
+    <text x="1146" y="380" font-size="12" fill="#64748B">override · re-triage · dashboard</text>
+    <text x="1146" y="398" font-size="11" fill="#94A3B8" font-family="Menlo, monospace">override · dashboard routes</text>
+
+  </g>
+
+  <!-- ================= ARROWS A -> B ================= -->
+  <line x1="160" y1="246" x2="160" y2="332" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="160" cy="264" r="11" fill="#0F172A"/>
+  <text x="160" y="268" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="178" y="268" font-size="11.5" fill="#475569">JWT session cookie</text>
+
+  <line x1="400" y1="246" x2="400" y2="332" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="400" cy="264" r="11" fill="#0F172A"/>
+  <text x="400" y="268" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="418" y="268" font-size="11.5" fill="#475569">invoice fields</text>
+
+  <!-- AI result back to reviewer -->
+  <line x1="1180" y1="336" x2="1180" y2="250" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <text x="1164" y="268" font-size="11.5" fill="#475569" text-anchor="end">AI recommendation shown</text>
+
+  <line x1="1250" y1="246" x2="1250" y2="332" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="1250" cy="264" r="11" fill="#0F172A"/>
+  <text x="1250" y="268" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
+  <text x="1268" y="268" font-size="11.5" fill="#475569">human decision</text>
+
+  <!-- ================= ARROWS B <-> C ================= -->
+  <line x1="400" y1="424" x2="400" y2="568" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="400" cy="498" r="11" fill="#0F172A"/>
+  <text x="400" y="502" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="418" y="494" font-size="11.5" fill="#475569">insert "pending" invoice</text>
+  <text x="418" y="510" font-size="11.5" fill="#475569">+ audit "create"</text>
+
+  <line x1="612" y1="572" x2="612" y2="428" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="612" cy="498" r="11" fill="#0F172A"/>
+  <text x="612" y="502" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="628" y="466" font-size="11.5" fill="#475569">load POs · vendors · prior invoices</text>
+
+  <!-- Rules -> LLM handoff -->
+  <line x1="780" y1="380" x2="836" y2="380" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="808" cy="362" r="11" fill="#0F172A"/>
+  <text x="808" y="366" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+  <text x="808" y="402" font-size="11.5" fill="#475569" text-anchor="middle">facts + flags</text>
+
+  <line x1="1075" y1="466" x2="1075" y2="568" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="1075" cy="506" r="11" fill="#0F172A"/>
+  <text x="1075" y="510" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
+  <text x="1091" y="502" font-size="11.5" fill="#475569">save ai_* fields</text>
+  <text x="1091" y="518" font-size="11.5" fill="#475569">+ audit "ai_triage"</text>
+
+  <line x1="1250" y1="424" x2="1250" y2="568" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <text x="1266" y="494" font-size="11.5" fill="#475569">status · humanOverride</text>
+  <text x="1266" y="510" font-size="11.5" fill="#475569">+ audit "human_override"</text>
+
+  <!-- Dashboard read -->
+  <line x1="1425" y1="572" x2="1425" y2="250" stroke="#334155" stroke-width="1.6" marker-end="url(#aDark)"/>
+  <circle cx="1425" cy="540" r="11" fill="#0F172A"/>
+  <text x="1425" y="544" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">10</text>
+  <text x="1409" y="552" font-size="11.5" fill="#475569" text-anchor="end">exception volume · override rate · avg time</text>
+
+  <!-- ================= LLM I/O ARROWS (blue, through corridor) ================= -->
+  <line x1="900" y1="466" x2="900" y2="812" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aBlue)"/>
+  <circle cx="900" cy="700" r="11" fill="#2563EB"/>
+  <text x="900" y="704" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+
+  <line x1="985" y1="816" x2="985" y2="470" stroke="#2563EB" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#aBlue)"/>
+  <circle cx="985" cy="700" r="11" fill="#2563EB"/>
+  <text x="985" y="704" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
+
+  <!-- ================= LANE C: TABLES ================= -->
+  <!-- users -->
+  <g>
+    <rect x="70" y="616" width="170" height="96" rx="6" fill="#FFFFFF" stroke="#34D399"/>
+    <rect x="70" y="616" width="170" height="24" rx="6" fill="#D1FAE5"/>
+    <text x="82" y="632" font-size="12" font-weight="700" fill="#065F46" font-family="Menlo, monospace">users</text>
+    <text x="82" y="656" font-size="10.5" fill="#334155" font-family="Menlo, monospace">id · email · role</text>
+    <text x="82" y="672" font-size="10.5" fill="#334155" font-family="Menlo, monospace">password (bcrypt)</text>
+    <text x="82" y="688" font-size="10.5" fill="#334155" font-family="Menlo, monospace">createdAt</text>
+  </g>
+  <!-- vendors -->
+  <g>
+    <rect x="262" y="616" width="150" height="80" rx="6" fill="#FFFFFF" stroke="#34D399"/>
+    <rect x="262" y="616" width="150" height="24" rx="6" fill="#D1FAE5"/>
+    <text x="274" y="632" font-size="12" font-weight="700" fill="#065F46" font-family="Menlo, monospace">vendors</text>
+    <text x="274" y="656" font-size="10.5" fill="#334155" font-family="Menlo, monospace">id · name</text>
+    <text x="274" y="672" font-size="10.5" fill="#334155" font-family="Menlo, monospace">(approved list)</text>
+  </g>
+  <!-- purchase_orders -->
+  <g>
+    <rect x="434" y="616" width="220" height="124" rx="6" fill="#FFFFFF" stroke="#34D399"/>
+    <rect x="434" y="616" width="220" height="24" rx="6" fill="#D1FAE5"/>
+    <text x="446" y="632" font-size="12" font-weight="700" fill="#065F46" font-family="Menlo, monospace">purchase_orders</text>
+    <text x="446" y="656" font-size="10.5" fill="#334155" font-family="Menlo, monospace">id · poNumber (unique)</text>
+    <text x="446" y="672" font-size="10.5" fill="#334155" font-family="Menlo, monospace">vendorId → vendors.id</text>
+    <text x="446" y="688" font-size="10.5" fill="#334155" font-family="Menlo, monospace">approvedAmount</text>
+    <text x="446" y="704" font-size="10.5" fill="#334155" font-family="Menlo, monospace">costCentre</text>
+    <text x="446" y="720" font-size="10.5" fill="#334155" font-family="Menlo, monospace">status (Open | Closed)</text>
+  </g>
+  <!-- invoices -->
+  <g>
+    <rect x="676" y="616" width="200" height="160" rx="6" fill="#FFFFFF" stroke="#34D399"/>
+    <rect x="676" y="616" width="200" height="24" rx="6" fill="#D1FAE5"/>
+    <text x="688" y="632" font-size="12" font-weight="700" fill="#065F46" font-family="Menlo, monospace">invoices</text>
+    <text x="688" y="656" font-size="10.5" fill="#334155" font-family="Menlo, monospace">invoiceNumber (unique)</text>
+    <text x="688" y="672" font-size="10.5" fill="#334155" font-family="Menlo, monospace">vendorName · amount</text>
+    <text x="688" y="688" font-size="10.5" fill="#334155" font-family="Menlo, monospace">poNumber — free text</text>
+    <text x="688" y="704" font-size="10.5" fill="#334155" font-family="Menlo, monospace">status · exceptionFlags</text>
+    <text x="688" y="720" font-size="10.5" fill="#334155" font-family="Menlo, monospace">ai_recommendation ·</text>
+    <text x="688" y="736" font-size="10.5" fill="#334155" font-family="Menlo, monospace">rationale · confidence ·</text>
+    <text x="688" y="752" font-size="10.5" fill="#334155" font-family="Menlo, monospace">source (llm | fallback)</text>
+    <text x="688" y="768" font-size="10.5" fill="#334155" font-family="Menlo, monospace">humanOverride · resolvedAt</text>
+  </g>
+  <!-- audit_log -->
+  <g>
+    <rect x="1020" y="616" width="210" height="124" rx="6" fill="#FFFFFF" stroke="#34D399"/>
+    <rect x="1020" y="616" width="210" height="24" rx="6" fill="#D1FAE5"/>
+    <text x="1032" y="632" font-size="12" font-weight="700" fill="#065F46" font-family="Menlo, monospace">audit_log</text>
+    <text x="1032" y="656" font-size="10.5" fill="#334155" font-family="Menlo, monospace">id · userId → users.id</text>
+    <text x="1032" y="672" font-size="10.5" fill="#334155" font-family="Menlo, monospace">entityType · entityId</text>
+    <text x="1032" y="688" font-size="10.5" fill="#334155" font-family="Menlo, monospace">action · timestamp</text>
+    <text x="1032" y="704" font-size="10.5" fill="#334155" font-family="Menlo, monospace">oldValue · newValue</text>
+    <text x="1032" y="720" font-size="10.5" fill="#334155" font-family="Menlo, monospace">(append-only)</text>
+  </g>
+  <!-- relationships -->
+  <g>
+    <rect x="1256" y="616" width="246" height="160" rx="6" fill="#FFFFFF" stroke="#A7F3D0"/>
+    <text x="1270" y="638" font-size="12" font-weight="700" fill="#065F46">Relationships</text>
+    <text x="1270" y="660" font-size="11" fill="#334155">vendors 1 →* purchase_orders</text>
+    <text x="1270" y="678" font-size="11" fill="#334155">users 1 →* audit_log</text>
+    <text x="1270" y="696" font-size="11" fill="#334155">invoices.poNumber ↔ purchase_orders:</text>
+    <text x="1270" y="714" font-size="11" fill="#334155">matched in code, deliberately NOT a</text>
+    <text x="1270" y="732" font-size="11" fill="#334155">foreign key — an invoice citing a missing</text>
+    <text x="1270" y="750" font-size="11" fill="#334155">PO must be storable: that is exactly</text>
+    <text x="1270" y="768" font-size="11" fill="#334155">the exception we need to detect.</text>
+  </g>
+
+  <!-- ================= LANE D: CLAUDE I/O CONTRACT ================= -->
+  <rect x="340" y="840" width="1160" height="104" rx="8" fill="#FFFFFF" stroke="#2563EB" stroke-width="1.4"/>
+  <text x="356" y="864" font-size="13.5" font-weight="700" fill="#1D4ED8">Anthropic Claude API — external LLM (claude-sonnet-4-5 · 20s timeout · 1 retry)</text>
+  <text x="356" y="890" font-size="12" fill="#334155"><tspan font-weight="700" fill="#1D4ED8">6  IN →</tspan>  system role: conservative AP triage assistant (never invents facts) · user message: invoice facts + matched PO + exception flags</text>
+  <text x="356" y="908" font-size="12" fill="#64748B">template: prompts/invoice-triage.md — placeholders filled at runtime, viewable in-app at /prompts</text>
+  <text x="356" y="932" font-size="12" fill="#334155"><tspan font-weight="700" fill="#1D4ED8">7  OUT ←</tspan>  strict JSON only: { recommendation: approve | escalate | reject · rationale · confidence 0–1 } — zod-validated before persisting</text>
+
+  <!-- Footnote -->
+  <text x="48" y="996" font-size="12" fill="#64748B">External services: only the Anthropic Claude API. Auth is in-app JWT (jose + bcrypt) — no SSO. Database is a local SQLite file with Prisma migrations. One Next.js app serves both UI and API.</text>
+  <text x="48" y="1014" font-size="12" fill="#64748B">Steps 1–10: sign in → submit → store pending → load context → rules flags → LLM in → LLM out (or fallback) → persist + audit → human decision → dashboard metrics.</text>
+</svg>

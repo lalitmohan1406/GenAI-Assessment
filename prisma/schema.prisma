@@ -1,0 +1,103 @@
+// FinanceOS — Invoice Exception Triage (Process 1)
+// Prisma schema. Datasource is SQLite for a zero-config local demo.
+// Every table required by the assessment's "minimum schema" for Process 1
+// is represented here. Tables belonging only to Process 2 (budget_actuals)
+// and Process 3 (vendors master with risk tiers) are intentionally omitted —
+// see docs/design-decisions.md ("scope discipline").
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Basic auth. Passwords are bcrypt-hashed; role drives light UI differences.
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String // bcrypt hash — never the plaintext
+  role      String   @default("analyst") // analyst | approver
+  createdAt DateTime @default(now())
+
+  auditLogs AuditLog[]
+}
+
+// The approved-vendor list. An invoice from a vendor NOT in this table is an
+// "unapproved / unknown vendor" exception.
+model Vendor {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  purchaseOrders PurchaseOrder[]
+}
+
+// The PO register (Appendix A1). Invoices are matched against these rows.
+model PurchaseOrder {
+  id             Int    @id @default(autoincrement())
+  poNumber       String @unique
+  vendorId       Int
+  vendorName     String // denormalised for fast display + name-mismatch checks
+  approvedAmount Float
+  costCentre     String
+  status         String // Open | Closed
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+}
+
+// Core entity. Each invoice carries: the raw submitted fields, the deterministic
+// exception flags, the AI triage output (recommendation + rationale + metadata),
+// and the human override + resolution timestamps used by the dashboard.
+model Invoice {
+  id            Int    @id @default(autoincrement())
+  invoiceNumber String @unique
+  vendorName    String // as submitted (may not match any approved vendor)
+  // Free text on purpose — NOT a foreign key. An invoice may cite a PO that does
+  // not exist (e.g. INV-009 -> PO-2024-999) or none at all; both are exceptions
+  // we must be able to store. Matching to the PO register happens in code.
+  poNumber String?
+  amount   Float
+
+  // Workflow status: pending -> (approved | escalated | rejected)
+  status String @default("pending")
+
+  // Deterministic matching output (computed before the LLM is called).
+  hasException   Boolean @default(false)
+  exceptionFlags String  @default("[]") // JSON array of flag codes, e.g. ["OVER_PO"]
+
+  // AI triage output (parsed from structured LLM JSON, then persisted).
+  aiRecommendation String? // approve | escalate | reject
+  aiRationale      String?
+  aiConfidence     Float?
+  aiModel          String? // which model produced it (audit / eval)
+  aiSource         String? // "llm" | "fallback" — did the real LLM answer?
+  aiRaw            String? // raw model text, kept for debugging / eval log
+
+  // Human-in-the-loop override. Null until a human acts.
+  humanOverride String? // approve | escalate | reject chosen by a human
+  overrideNote  String?
+  resolvedById  Int?
+  resolvedAt    DateTime?
+
+  source    String   @default("manual") // manual | pdf | json
+  createdAt DateTime @default(now())
+}
+
+// Immutable audit trail for every AI decision and human override.
+// Without this we cannot measure override rate — and "if you cannot measure
+// override rate, you cannot improve the model" (assessment 6.2).
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?
+  entityType String // e.g. "invoice"
+  entityId   Int
+  action     String // e.g. "ai_triage" | "human_override" | "create"
+  oldValue   String?
+  newValue   String?
+  timestamp  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}

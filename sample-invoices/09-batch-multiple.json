@@ -1,0 +1,5 @@
+[
+  { "invoiceNumber": "INV-BATCH-01", "vendorName": "OfficeHub Supplies", "poNumber": "PO-2024-006", "amount": 1450 },
+  { "invoiceNumber": "INV-BATCH-02", "vendorName": "DataBridge Analytics", "poNumber": "PO-2024-009", "amount": 36500 },
+  { "invoiceNumber": "INV-BATCH-03", "vendorName": "SecureVault Storage", "poNumber": "PO-2024-777", "amount": 5600 }
+]
