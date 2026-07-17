@@ -29,6 +29,17 @@ export async function POST(req: Request, { params }: { params: { id: string } })
   const invoice = await prisma.invoice.findUnique({ where: { id } });
   if (!invoice) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+  // Human-in-the-loop is a hard rule, enforced server-side (not just via the
+  // disabled UI button): a person can only accept or override a recommendation
+  // that exists. Resolving an un-triaged invoice would also corrupt the
+  // override-rate metric, since there would be no AI decision to compare against.
+  if (!invoice.aiRecommendation) {
+    return NextResponse.json(
+      { error: "Run AI triage before recording a decision." },
+      { status: 409 },
+    );
+  }
+
   const { decision, note } = parsed.data;
   // "Override" strictly means the human chose differently from the AI. If they
   // agreed, we still record the human decision (that is a confirmation signal).

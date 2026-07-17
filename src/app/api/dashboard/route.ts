@@ -12,8 +12,11 @@ export async function GET() {
   const total = invoices.length;
   const withException = invoices.filter((i) => i.hasException).length;
 
-  // Resolved = a human has recorded a final decision.
-  const resolved = invoices.filter((i) => i.humanOverride && i.resolvedAt);
+  // Resolved = a human recorded a final decision on an invoice the AI triaged.
+  // The AI recommendation must exist for "AI vs human override rate" to mean
+  // anything — comparing a human decision against a null recommendation would
+  // count as an override and inflate the metric.
+  const resolved = invoices.filter((i) => i.humanOverride && i.resolvedAt && i.aiRecommendation);
   const overrides = resolved.filter((i) => i.humanOverride !== i.aiRecommendation);
 
   // Average resolution time in seconds (createdAt -> resolvedAt).
