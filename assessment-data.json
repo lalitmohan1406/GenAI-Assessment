@@ -1,0 +1,122 @@
+[
+  {
+    "invoiceNumber": "INV-001",
+    "vendorName": "Acme Consulting Ltd",
+    "poNumber": "PO-2024-001",
+    "amount": 45000,
+    "expectedException": "None",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-002",
+    "vendorName": "Global Print Co",
+    "poNumber": "PO-2024-002",
+    "amount": 3850,
+    "expectedException": "Over PO by $650",
+    "expectedOutput": "Escalate"
+  },
+  {
+    "invoiceNumber": "INV-003",
+    "vendorName": "FastCloud Infra",
+    "poNumber": "PO-2024-003",
+    "amount": 12800,
+    "expectedException": "None",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-004",
+    "vendorName": "Unknown Vendor XYZ",
+    "poNumber": null,
+    "amount": 7200,
+    "expectedException": "No PO, unrecognised vendor",
+    "expectedOutput": "Reject"
+  },
+  {
+    "invoiceNumber": "INV-005",
+    "vendorName": "Meridian Legal",
+    "poNumber": "PO-2024-004",
+    "amount": 28500,
+    "expectedException": "None",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-006",
+    "vendorName": "Acme Consulting Ltd",
+    "poNumber": "PO-2024-001",
+    "amount": 45000,
+    "expectedException": "Duplicate of INV-001",
+    "expectedOutput": "Escalate"
+  },
+  {
+    "invoiceNumber": "INV-007",
+    "vendorName": "OfficeHub Supplies",
+    "poNumber": "PO-2024-006",
+    "amount": 1200,
+    "expectedException": "Under PO — partial invoice",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-008",
+    "vendorName": "TechForce Recruitment",
+    "poNumber": "PO-2024-007",
+    "amount": 71000,
+    "expectedException": "Over PO by $4,000",
+    "expectedOutput": "Escalate"
+  },
+  {
+    "invoiceNumber": "INV-009",
+    "vendorName": "BlueSky Travel",
+    "poNumber": "PO-2024-999",
+    "amount": 9100,
+    "expectedException": "PO number does not exist",
+    "expectedOutput": "Reject"
+  },
+  {
+    "invoiceNumber": "INV-010",
+    "vendorName": "DataBridge Analytics",
+    "poNumber": "PO-2024-009",
+    "amount": 33000,
+    "expectedException": "None",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-011",
+    "vendorName": "SecureVault Storage",
+    "poNumber": "PO-2024-005",
+    "amount": 5600,
+    "expectedException": "PO is Closed",
+    "expectedOutput": "Reject"
+  },
+  {
+    "invoiceNumber": "INV-012",
+    "vendorName": "Global Print Co",
+    "poNumber": "PO-2024-002",
+    "amount": 3200,
+    "expectedException": "None",
+    "expectedOutput": "Approve"
+  },
+  {
+    "invoiceNumber": "INV-013",
+    "vendorName": "Acme Consulting Ltd",
+    "poNumber": "PO-2024-005",
+    "amount": 18000,
+    "expectedException": "PO is Closed",
+    "expectedOutput": "Reject"
+  },
+  {
+    "invoiceNumber": "INV-014",
+    "vendorName": "DataBridge Analytics",
+    "poNumber": null,
+    "amount": 33000,
+    "expectedException": "Missing PO reference field",
+    "expectedOutput": "Escalate"
+  },
+  {
+    "invoiceNumber": "INV-015",
+    "vendorName": "FastCloud Infra",
+    "poNumber": "PO-2024-003",
+    "amount": 14000,
+    "expectedException": "Over PO by $1,200",
+    "expectedOutput": "Escalate"
+  }
+]
